@@ -1,0 +1,16 @@
+{
+    "name": "ExpensesBot",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "endpoint": "https://localhost:44304/api/messages",
+            "id": "190",
+            "name": "ExpensesBot"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "path": "C:\\Repository\\Bots\\ExpensesTelegramBot\\ExpensesBot.bot",
+    "overrides": null
+}
