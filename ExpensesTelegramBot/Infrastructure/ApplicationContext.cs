@@ -14,7 +14,7 @@ namespace Infrastructure
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<SingleExpence> SingleExpences { get; set; }
+        public DbSet<SingleExpense> SingleExpenses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

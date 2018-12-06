@@ -8,7 +8,7 @@ namespace Core
     {
         private readonly PropertyInfo[] propertyInfos;
 
-        public ValueObject()
+        protected ValueObject()
         {
             propertyInfos = GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance);
