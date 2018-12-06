@@ -7,6 +7,12 @@
             "endpoint": "https://localhost:44304/api/messages",
             "id": "190",
             "name": "ExpensesBot"
+        },
+        {
+            "type": "endpoint",
+            "endpoint": "http://localhost:49681/api/messages",
+            "name": "aaaa",
+            "id": "189"
         }
     ],
     "padlock": "",
