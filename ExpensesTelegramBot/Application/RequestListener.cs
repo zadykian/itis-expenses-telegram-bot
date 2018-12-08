@@ -30,15 +30,17 @@ namespace Application
         {
             if (isListening) return;
             isListening = true;
-            Console.WriteLine("HttpListener is listening...");
             while (true)
             {
                 var context =  httpListener.GetContext();
                 var response = context.Response;
+                var request = context.Request;
 
                 var buffer = Encoding.UTF8.GetBytes("AAAAAAAA");
                     
                 response.ContentLength64 = buffer.Length;
+
+                
 
                 using (Stream stream = response.OutputStream)
                 {

@@ -7,11 +7,6 @@ namespace Core
         public readonly DateTime StartDate;
         public readonly DateTime EndDate;
 
-        public StatisticResult(DateTime startDate)
-            : this(startDate, DateTime.Now)
-        {
-        }
-
         public StatisticResult(DateTime startDate, DateTime endDate)
         {
             StartDate = startDate;

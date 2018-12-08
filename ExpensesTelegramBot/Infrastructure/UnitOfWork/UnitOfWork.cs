@@ -2,20 +2,20 @@
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationContext context;
+        private readonly ApplicationContext applicationContext;
 
-        public UnitOfWork(ApplicationContext context)
+        public UnitOfWork(ApplicationContext applicationContext)
         {
-            UserRepository = new UserRepository(context);
-            SingleExpenseRepository = new SingleExpenseRepository(context);
-            this.context = context;
+            UserRepository = new UserRepository(applicationContext);
+            SingleExpenseRepository = new SingleExpenseRepository(applicationContext);
+            this.applicationContext = applicationContext;
         }
 
         public IUserRepository UserRepository { get; private set; }
         public ISingleExpenseRepository SingleExpenseRepository { get; private set; }
 
-        public int Save() => context.SaveChanges();
+        public int Save() => applicationContext.SaveChanges();
 
-        public void Dispose() => context.Dispose();
+        public void Dispose() => applicationContext.Dispose();
     }
 }
