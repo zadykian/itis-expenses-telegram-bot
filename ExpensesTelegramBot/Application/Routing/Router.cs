@@ -5,9 +5,9 @@ using System.Net;
 
 namespace Application
 {
-    public static class Router
+    public class Router : IRouter
     {
-        public static Type GetControllerType(HttpListenerRequest request)
+        public Type GetControllerType(HttpListenerRequest request)
         {
             var routePath = request.QueryString;
             if (routePath.Count != 2)
@@ -27,34 +27,38 @@ namespace Application
             return controllerType;
         }
 
-        public static MethodInfo GetControllerMethod(HttpListenerRequest request, Type controllerType)
+        public MethodInfo GetControllerAction(HttpListenerRequest request, Type controllerType)
         {
             var routePath = request.QueryString;
             if (routePath.Count != 2)
             {
                 throw new WebException("Query is invalid.");
             }
-            MethodInfo methodInfo;
-            try
+            var methodInfo = controllerType
+                .GetMethods()
+                .FirstOrDefault(method => MethodMatches(method, request));
+            if (methodInfo != null)
             {
-                methodInfo = controllerType
-                    .GetMethods()
-                    .FirstOrDefault(method => MethodMatches(method, request));
-            }
-            catch
-            {
-                throw new WebException($"Controller {controllerType.Name} does not have method");
-            }
+                throw new WebException(
+                    $"Controller '{controllerType.Name}' does not have method '{routePath[1]}'.");
+            }        
             return methodInfo;
         }
 
         private static bool MethodMatches(MethodInfo methodInfo, HttpListenerRequest request)
-            => methodInfo.Name == request.QueryString[1] &&
-               methodInfo
-                .GetCustomAttributes()
-                .Any(a => IsHttpAttribute(a, request.HttpMethod));
+        {
+            var queryContainsMethod = methodInfo.Name.Equals(
+                request.QueryString[1], 
+                StringComparison.InvariantCultureIgnoreCase);
 
-        private static bool IsHttpAttribute(Attribute attribute, string httpMethod)
+            var methodHasHttpAttribute = methodInfo
+                .GetCustomAttributes()
+                .Any(a => IsRequiredHttpAttribute(a, request.HttpMethod));
+
+            return queryContainsMethod && methodHasHttpAttribute;
+        }
+
+        private static bool IsRequiredHttpAttribute(Attribute attribute, string httpMethod)
             => attribute.GetType().Name
                 .Contains(httpMethod, StringComparison.InvariantCultureIgnoreCase);
     }

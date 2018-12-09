@@ -3,6 +3,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Threading.Tasks;
+using Infrastructure;
 
 namespace Application
 {
@@ -14,8 +15,8 @@ namespace Application
         public RequestListener((string, int) hostPortPair)
         {
             httpListener = new HttpListener();
-            httpListener.Prefixes.Add(
-                $"http://{hostPortPair.Item1}:{hostPortPair.Item2}/");
+            httpListener.Prefixes
+                .Add($"http://{hostPortPair.Item1}:{hostPortPair.Item2}/");
             httpListener.Start();
         }
 
@@ -32,19 +33,16 @@ namespace Application
             isListening = true;
             while (true)
             {
-                var context =  httpListener.GetContext();
-                var response = context.Response;
-                var request = context.Request;
-
-                var buffer = Encoding.UTF8.GetBytes("AAAAAAAA");
-                    
-                response.ContentLength64 = buffer.Length;
-
-                
-
-                using (Stream stream = response.OutputStream)
+                var httpContext =  httpListener.GetContext();
+                using (ApplicationContext dbContext = new ApplicationContext())
                 {
-                    stream.Write(buffer, 0, buffer.Length);
+                    var requestHandler = new RequestHandler(
+                        new Router(),
+                        new UnitOfWork(dbContext),
+                        new ModelBinder());
+
+                    var actionResult = requestHandler.Handle(httpContext);
+                    actionResult.ExecuteResultAsync(httpContext);
                 }
             }
         }
