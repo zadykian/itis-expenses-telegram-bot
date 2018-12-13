@@ -38,10 +38,29 @@ namespace Application
                 var stringValue = httpRequestTokens[parameterType.Name];
                 return Convert.ChangeType(stringValue, parameterType);
             }
-            var properties = parameterType
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            else
+            {
+                return BindToComplexObject(parameterType, httpRequestTokens);
+            }
+        }
 
-            
+        private object BindToComplexObject(
+            Type parameterType,
+            NameValueCollection httpRequestTokens)
+        {
+            var newInstance = Activator.CreateInstance(parameterType);
+            var properties = parameterType.GetProperties(
+                BindingFlags.Public | 
+                BindingFlags.Instance | 
+                BindingFlags.SetProperty);
+
+            foreach (var property in properties)
+            {
+                var propValue = BindArgument(property.PropertyType, httpRequestTokens);
+                property.SetValue(newInstance, propValue);
+            }
+
+            return newInstance;
         }
     }
 }
