@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {
-            RequestListener.StartNew(ArgsParser.GetHostAndPort(args));
+            WebHost<Startup>.CreateDefault(args)
+                .Run();
         }
     }
 }

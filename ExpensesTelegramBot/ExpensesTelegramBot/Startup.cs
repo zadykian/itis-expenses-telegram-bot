@@ -21,11 +21,12 @@ namespace ExpensesBotApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var builder = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder()
                 .SetBasePath(ContentRootPath)
                 .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables();
-            var configuration = builder.Build();
+                .AddEnvironmentVariables()
+                .Build();
+
             services.AddSingleton(configuration);
 
             services.AddBot<Bot>(options =>

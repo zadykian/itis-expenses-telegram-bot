@@ -1,21 +1,16 @@
-﻿using System.Net;
-using Infrastructure;
+﻿using System;
+using System.Net;
 
 namespace Application
 {
-    public class RequestHandler
+    public class RequestHandler : IRequestHandler
     {
         private readonly IRouter router;
-        private readonly IUnitOfWork unitOfWork;
         private readonly IModelBinder modelBinder;
 
-        public RequestHandler(
-            IRouter router, 
-            IUnitOfWork unitOfWork,
-            IModelBinder modelBinder)
+        public RequestHandler(IRouter router, IModelBinder modelBinder)
         {
             this.router = router;
-            this.unitOfWork = unitOfWork;
             this.modelBinder = modelBinder;
         }
 
@@ -27,9 +22,7 @@ namespace Application
             var controllerAction = router
                 .GetControllerAction(httpContext.Request, controllerType);
 
-            var controllerInstance = controllerType
-                .GetConstructor(new[] { typeof(IUnitOfWork) })
-                .Invoke(new[] { unitOfWork });
+            var controllerInstance = Activator.CreateInstance(controllerType);
 
             var actionParams = modelBinder
                 .BindArguments(httpContext.Request, controllerAction);
