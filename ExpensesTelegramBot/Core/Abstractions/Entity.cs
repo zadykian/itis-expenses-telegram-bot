@@ -4,7 +4,7 @@ namespace Core
 {
     public abstract class Entity : IEquatable<Entity>
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         public override int GetHashCode()
             => Id.GetHashCode();

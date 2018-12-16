@@ -8,12 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application
 {
-    public class UserController : Controller
+    public class UserController : DbAccessController
     {
+        public UserController(ApplicationContext dbContext)
+            : base(dbContext)
+        {
+        }
+
         [HttpGet]
         public IActionResult AddSingleExpense(SingleExpense newSingleExpense)
         {
-            //unitOfWork.SingleExpenseRepository.Add(newSingleExpense);
+            dbContext.SingleExpenses.Add(newSingleExpense);
             return new ContentResult("Ok!");
         }      
     }

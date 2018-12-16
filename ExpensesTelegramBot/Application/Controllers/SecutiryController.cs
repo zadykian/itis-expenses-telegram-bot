@@ -5,7 +5,11 @@ using Infrastructure;
 
 namespace Application
 {
-    public class SecutiryController : Controller
+    public class SecutiryController : DbAccessController
     {
+        public SecutiryController(ApplicationContext dbContext)
+            : base(dbContext)
+        {
+        }
     }
 }

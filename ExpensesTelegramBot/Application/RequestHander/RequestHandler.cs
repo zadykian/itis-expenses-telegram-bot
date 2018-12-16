@@ -7,11 +7,13 @@ namespace Application
     {
         private readonly IRouter router;
         private readonly IModelBinder modelBinder;
+        private readonly ICompositionRoot startup;
 
-        public RequestHandler(IRouter router, IModelBinder modelBinder)
+        public RequestHandler(IRouter router, IModelBinder modelBinder, ICompositionRoot startup)
         {
             this.router = router;
             this.modelBinder = modelBinder;
+            this.startup = startup;
         }
 
         public IActionResult Handle(HttpListenerContext httpContext)
@@ -22,8 +24,8 @@ namespace Application
             var controllerAction = router
                 .GetControllerAction(httpContext.Request, controllerType);
 
-            var controllerInstance = Activator.CreateInstance(controllerType);
-
+            var controllerInstance = startup.GetControllerInstance(controllerType);
+            
             var actionParams = modelBinder
                 .BindArguments(httpContext.Request, controllerAction);
 

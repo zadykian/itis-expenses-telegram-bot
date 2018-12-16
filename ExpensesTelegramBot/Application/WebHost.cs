@@ -4,21 +4,27 @@ using System.Text;
 
 namespace Application
 {
-    public class WebHost<TStartup> where TStartup : class, new()
+    public class WebHost
     {
-        private readonly TStartup startup;
+        private readonly ICompositionRoot compositionRoot;
         private readonly IRequestListener requestListener;
 
-        public WebHost(IRequestListener requestListener)
+        public WebHost(ICompositionRoot compositionRoot, IRequestListener requestListener)
         {
-            startup = new TStartup();
-            this.requestListener = requestListener;
+            this.compositionRoot = compositionRoot ?? 
+                throw new ArgumentNullException(nameof(compositionRoot));
+
+            this.requestListener = requestListener ?? 
+                throw new ArgumentNullException(nameof(requestListener));
         }
 
-        public static WebHost<TStartup> CreateDefault(string[] args)
+        public static WebHost CreateDefault(string[] args)
         {
-            var listener = new RequestListener(GetHostAndPort(args));
-            return new WebHost<TStartup>(listener);
+            var compositionRoot = new CompositionRoot();
+            compositionRoot.ConfigureServices();
+            var requestHandler = compositionRoot.GetRequestHandler();
+            var listener = new RequestListener(GetHostAndPort(args), requestHandler);     
+            return new WebHost(compositionRoot, listener);
         }
 
         public void Run() => requestListener.StartListening();

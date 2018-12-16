@@ -3,7 +3,7 @@ using Infrastructure;
 
 namespace Application
 {
-    public abstract class Controller : IDisposable
+    public abstract class ControllerBase : IDisposable
     {
         public void Dispose() => Dispose(true);
 

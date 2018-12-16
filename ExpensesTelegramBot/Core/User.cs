@@ -6,7 +6,7 @@ namespace Core
 {
     public class User : Entity
     {
-        public int PasswordHash { get; set; }
+        public int PasswordHash { get; private set; }
 
         public void UpdatePassword(string newPassword)
         {

@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            WebHost<Startup>.CreateDefault(args)
+            WebHost.CreateDefault(args)
                 .Run();
         }
     }

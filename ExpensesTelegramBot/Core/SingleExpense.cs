@@ -6,7 +6,17 @@ namespace Core
 {
     public class SingleExpense : ValueObject
     {
-        public string Category { get; set; }
-        public int Amount { get; set; }
+        private SingleExpense()
+        {
+        }
+
+        public SingleExpense(string category, int amount)
+        {
+            Category = category;
+            Amount = amount;
+        }
+
+        public string Category { get; private set; }
+        public int Amount { get; private set; }
     }
 }

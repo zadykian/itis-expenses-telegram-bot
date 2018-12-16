@@ -12,9 +12,9 @@ namespace Infrastructure
             Database.EnsureCreated();
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; private set; }
 
-        public DbSet<SingleExpense> SingleExpenses { get; set; }
+        public DbSet<SingleExpense> SingleExpenses { get; private set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
