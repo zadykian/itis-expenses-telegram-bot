@@ -14,6 +14,8 @@ namespace Core
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance);
         }
 
+        public int Id { get; private set; }
+
         public override bool Equals(object obj) => Equals(obj as ValueObject);
 
         public bool Equals(ValueObject other)

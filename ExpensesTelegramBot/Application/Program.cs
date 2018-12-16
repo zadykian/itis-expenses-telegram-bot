@@ -6,6 +6,12 @@
         {
             WebHost.CreateDefault(args)
                 .Run();
+
+            //.∧＿∧ 
+            //( ･ω･｡)つ━☆・*。 
+            //⊂　 ノ ・゜+.
+            //しーＪ°。+*костыльнуть!
+            System.Console.ReadKey();
         }
     }
 }

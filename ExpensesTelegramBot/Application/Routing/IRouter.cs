@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Net;
 using System.Reflection;
 
 namespace Application
 {
     public interface IRouter
     {
-        Type GetControllerType(HttpListenerRequest httpRequest);
+        Type GetControllerType(string controllerTypeName);
 
-        MethodInfo GetControllerAction(HttpListenerRequest httpRequest, Type controllerType);
+        MethodInfo GetControllerAction(Type controllerType, string controllerActionName, string httpMethod);
     }
 }

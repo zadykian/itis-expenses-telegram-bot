@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Reflection;
 
 namespace Application
 {
@@ -7,27 +8,57 @@ namespace Application
     {
         private readonly IRouter router;
         private readonly IModelBinder modelBinder;
-        private readonly ICompositionRoot startup;
+        private readonly ICompositionRoot compositionRoot;
 
-        public RequestHandler(IRouter router, IModelBinder modelBinder, ICompositionRoot startup)
+        public RequestHandler(IRouter router, IModelBinder modelBinder, ICompositionRoot compositionRoot)
         {
             this.router = router;
             this.modelBinder = modelBinder;
-            this.startup = startup;
+            this.compositionRoot = compositionRoot;
         }
 
         public IActionResult Handle(HttpListenerContext httpContext)
         {
-            var controllerType = router
-                .GetControllerType(httpContext.Request);
+            var routePath = httpContext.Request.Url.AbsolutePath.TrimStart('/').Split('/');
+            if (routePath.Length != 2)
+            {
+                return new BadRequestResult();
+            }
 
-            var controllerAction = router
-                .GetControllerAction(httpContext.Request, controllerType);
+            Type controllerType;
+            try
+            {
+                controllerType = router.GetControllerType(routePath[0]);
+            }
+            catch (ControllerNotFoundException)
+            {
+                return new NotFoundResult();
+            }
 
-            var controllerInstance = startup.GetControllerInstance(controllerType);
-            
-            var actionParams = modelBinder
-                .BindArguments(httpContext.Request, controllerAction);
+            MethodInfo controllerAction;
+            try
+            {
+                controllerAction = router
+                    .GetControllerAction(controllerType, routePath[1], httpContext.Request.HttpMethod);
+            }
+            catch (ControllerActionNotFoundException)
+            {
+                return new NotFoundResult();
+            }
+
+            var controllerInstance = compositionRoot
+                .GetControllerInstance(controllerType);
+
+            object[] actionParams;
+            try
+            {
+                actionParams = modelBinder
+                    .BindArguments(httpContext.Request, controllerAction);
+            }
+            catch (ModelBindingException)
+            {
+                return new BadRequestResult();
+            }
 
             var result = controllerAction
                 .Invoke(controllerInstance, actionParams);

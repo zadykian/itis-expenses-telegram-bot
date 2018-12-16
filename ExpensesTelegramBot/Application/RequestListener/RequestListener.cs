@@ -21,7 +21,7 @@ namespace Application
                 throw new ArgumentNullException(nameof(requestHandler));
         }
 
-        public void StartListening()
+        public async void StartListening()
         {
             if (httpListener.IsListening)
             {
@@ -30,9 +30,9 @@ namespace Application
             httpListener.Start();
             while (true)
             {
-                var httpContext = httpListener.GetContext();
+                var httpContext = await httpListener.GetContextAsync();
                 var actionResult = requestHandler.Handle(httpContext);
-                actionResult.ExecuteResultAsync(httpContext);
+                await actionResult.ExecuteResultAsync(httpContext);
             }
         }
     }

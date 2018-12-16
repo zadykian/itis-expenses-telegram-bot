@@ -23,6 +23,7 @@ namespace Application
             {
                 stream.Write(result, 0, result.Length);
             }
+            base.ExecuteResult(context);
         }
     }
 }

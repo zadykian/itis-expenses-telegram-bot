@@ -13,6 +13,7 @@ namespace Application
 
         public virtual void ExecuteResult(HttpListenerContext context)
         {
+            context.Response.Close();
         }
     }
 }

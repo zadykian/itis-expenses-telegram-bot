@@ -7,53 +7,40 @@ namespace Application
 {
     public class Router : IRouter
     {
-        public Type GetControllerType(HttpListenerRequest request)
+        public Type GetControllerType(string controllerTypeName)
         {
-            var routePath = request.QueryString;
-            if (routePath.Count != 2)
+            var controllerType = Type.GetType($"Application.{controllerTypeName}");
+            if (controllerType == null)
             {
-                throw new WebException("Query is invalid.");
-            }
-            Type controllerType;
-            try
-            {
-                controllerType = Type.GetType($"Application.{routePath[0]}");
-            }
-            catch (TargetInvocationException e)
-            {
-                throw new WebException(
-                    $"Controller with name '{routePath[0]}' does not exists.", e);
+                throw new ControllerNotFoundException(
+                    $"Controller class '{controllerTypeName}' does not exist.");
             }
             return controllerType;
         }
 
-        public MethodInfo GetControllerAction(HttpListenerRequest request, Type controllerType)
+        public MethodInfo GetControllerAction(Type controllerType, string controllerActionName, string httpMethod)
         {
-            var routePath = request.QueryString;
-            if (routePath.Count != 2)
-            {
-                throw new WebException("Query is invalid.");
-            }
             var methodInfo = controllerType
                 .GetMethods()
-                .FirstOrDefault(method => MethodMatches(method, request));
-            if (methodInfo != null)
+                .FirstOrDefault(method => MethodMatches(method, controllerActionName, httpMethod));
+            if (methodInfo == null)
             {
-                throw new WebException(
-                    $"Controller '{controllerType.Name}' does not have method '{routePath[1]}'.");
+                throw new ControllerActionNotFoundException(
+                    $"Controller '{controllerType.Name}' does not have method " +
+                    $"'{controllerActionName}' with attribute '{httpMethod}'.");
             }        
             return methodInfo;
         }
 
-        private static bool MethodMatches(MethodInfo methodInfo, HttpListenerRequest request)
+        private static bool MethodMatches(MethodInfo controllerActionInfo, string controllerActionName, string httpMethod)
         {
-            var queryContainsMethod = methodInfo.Name.Equals(
-                request.QueryString[1], 
+            var queryContainsMethod = controllerActionInfo.Name.Equals(
+                controllerActionName, 
                 StringComparison.InvariantCultureIgnoreCase);
 
-            var methodHasHttpAttribute = methodInfo
+            var methodHasHttpAttribute = controllerActionInfo
                 .GetCustomAttributes()
-                .Any(a => IsRequiredHttpAttribute(a, request.HttpMethod));
+                .Any(a => IsRequiredHttpAttribute(a, httpMethod));
 
             return queryContainsMethod && methodHasHttpAttribute;
         }

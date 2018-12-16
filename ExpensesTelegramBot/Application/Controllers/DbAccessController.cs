@@ -2,7 +2,7 @@
 
 namespace Application
 {
-    public abstract class DbAccessController
+    public abstract class DbAccessController : ControllerBase
     {
         protected readonly ApplicationContext dbContext;
 
