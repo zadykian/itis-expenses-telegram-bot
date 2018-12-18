@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramClient", "TelegramC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{BF5DF5F2-E0A1-431F-8270-AD956C529BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{3F543913-8153-484D-8987-D8CC070E5C98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{3F543913-8153-484D-8987-D8CC070E5C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{09E060B7-2337-42FB-B080-F0253B7FC7E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{09E060B7-2337-42FB-B080-F0253B7FC7E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcWebLibrary", "MvcWebLibrary\MvcWebLibrary.csproj", "{6038018F-541B-46AC-8DC6-7EDCE158ABAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{09E060B7-2337-42FB-B080-F0253B7FC7E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09E060B7-2337-42FB-B080-F0253B7FC7E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09E060B7-2337-42FB-B080-F0253B7FC7E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6038018F-541B-46AC-8DC6-7EDCE158ABAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6038018F-541B-46AC-8DC6-7EDCE158ABAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6038018F-541B-46AC-8DC6-7EDCE158ABAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6038018F-541B-46AC-8DC6-7EDCE158ABAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
