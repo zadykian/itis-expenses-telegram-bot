@@ -5,7 +5,7 @@ using System.Net;
 
 namespace MvcWebLibrary
 {
-    public interface IRequestHandler
+    public interface IHttpRequestHandler
     {
         IActionResult Handle(HttpListenerContext httpContext);
     }

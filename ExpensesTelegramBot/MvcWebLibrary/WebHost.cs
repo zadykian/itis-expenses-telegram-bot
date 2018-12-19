@@ -7,9 +7,9 @@ namespace MvcWebLibrary
     public class WebHost
     {
         private readonly ICompositionRoot compositionRoot;
-        private readonly IRequestListener requestListener;
+        private readonly IHttpRequestListener requestListener;
 
-        public WebHost(ICompositionRoot compositionRoot, IRequestListener requestListener)
+        public WebHost(ICompositionRoot compositionRoot, IHttpRequestListener requestListener)
         {
             this.compositionRoot = compositionRoot ?? 
                 throw new ArgumentNullException(nameof(compositionRoot));
@@ -20,15 +20,17 @@ namespace MvcWebLibrary
 
         public static WebHost CreateDefault(string[] args)
         {
-            var compositionRoot = new CompositionRoot();
-            var requestHandler = compositionRoot.GetRequestHandler();
-            var listener = new RequestListener(GetHostAndPort(args), requestHandler);     
+            var compositionRoot = new NinjectCompositionRoot();
+            var requestHandler = compositionRoot.GetHttpRequestHandler();
+            var listener = new HttpRequestListener(GetHostAndPort(args), requestHandler);     
             return new WebHost(compositionRoot, listener);
         }
 
         public WebHost UseStartup<TStartup>() where TStartup : IStartup, new()
         {
-            
+            var startup = new TStartup();
+            var serviceConfigurator = compositionRoot.ServiceConfigurator;
+            startup.ConfigureServices(serviceConfigurator);
             return this;
         }
 

@@ -4,7 +4,9 @@ namespace MvcWebLibrary
 {
     public interface ICompositionRoot
     {
-        IRequestHandler GetRequestHandler();
+        IServiceConfigurator ServiceConfigurator { get; }
+
+        IHttpRequestHandler GetHttpRequestHandler();
 
         ControllerBase GetControllerInstance(Type controllerType);
     }

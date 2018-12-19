@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MvcWebLibrary;
+﻿using MvcWebLibrary;
+using Infrastructure;
 
 namespace Application
 {
     public class Startup : IStartup
     {
-        public void ConfigureServices(ICompositionRoot compositionRoot)
+        public void ConfigureServices(IServiceConfigurator serviceConfigurator)
         {
-            throw new NotImplementedException();
+            serviceConfigurator.AddParentScopeService<ApplicationContext>();
         }
     }
 }

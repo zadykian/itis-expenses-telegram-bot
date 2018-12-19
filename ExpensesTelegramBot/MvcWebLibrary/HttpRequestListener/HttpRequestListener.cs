@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace MvcWebLibrary
 {
-    internal class RequestListener : IRequestListener
+    internal class HttpRequestListener : IHttpRequestListener
     {
-        private readonly IRequestHandler requestHandler;
+        private readonly IHttpRequestHandler requestHandler;
         private readonly HttpListener httpListener;
 
-        public RequestListener((string, int) hostPortPair, IRequestHandler requestHandler)
+        public HttpRequestListener((string, int) hostPortPair, IHttpRequestHandler requestHandler)
         {
             httpListener = new HttpListener();
             httpListener.Prefixes
@@ -30,7 +30,7 @@ namespace MvcWebLibrary
             httpListener.Start();
             while (true)
             {
-                var httpContext = await httpListener.GetContextAsync();
+                var httpContext = httpListener.GetContext();
                 var actionResult = requestHandler.Handle(httpContext);
                 await actionResult.ExecuteResultAsync(httpContext);
             }

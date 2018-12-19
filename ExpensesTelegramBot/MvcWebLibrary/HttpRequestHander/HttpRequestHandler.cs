@@ -4,13 +4,13 @@ using System.Reflection;
 
 namespace MvcWebLibrary
 {
-    internal class RequestHandler : IRequestHandler
+    internal class HttpRequestHandler : IHttpRequestHandler
     {
         private readonly IRouter router;
         private readonly IModelBinder modelBinder;
         private readonly ICompositionRoot compositionRoot;
 
-        public RequestHandler(IRouter router, IModelBinder modelBinder, ICompositionRoot compositionRoot)
+        public HttpRequestHandler(IRouter router, IModelBinder modelBinder, ICompositionRoot compositionRoot)
         {
             this.router = router;
             this.modelBinder = modelBinder;

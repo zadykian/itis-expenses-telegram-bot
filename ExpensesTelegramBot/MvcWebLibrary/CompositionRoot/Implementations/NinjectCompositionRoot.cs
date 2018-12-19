@@ -5,22 +5,27 @@ using System;
 
 namespace MvcWebLibrary
 {
-    internal class CompositionRoot : ICompositionRoot
+    internal class NinjectCompositionRoot : ICompositionRoot
     {
         private readonly StandardKernel container;
 
-        public CompositionRoot()
+        public NinjectCompositionRoot()
         {
             container = new StandardKernel();
+            ServiceConfigurator = new NinjectServiceConfigurator(container);
             ConfigureInitialServices();
         }
 
+        public IServiceConfigurator ServiceConfigurator { get; }
+
+        public IHttpRequestHandler GetHttpRequestHandler() 
+            => container.Get<IHttpRequestHandler>();
+
+        public ControllerBase GetControllerInstance(Type controllerType)
+            => (ControllerBase)container.Get(controllerType);
+
         private void ConfigureInitialServices()
         {
-            container.Bind<ApplicationContext>()
-                .ToSelf()
-                .InParentScope();
-
             container.Bind<IRouter>()
                 .To<Router>()
                 .InSingletonScope();
@@ -29,8 +34,8 @@ namespace MvcWebLibrary
                 .To<ModelBinder>()
                 .InSingletonScope();
 
-            container.Bind<IRequestHandler>()
-                .To<RequestHandler>()
+            container.Bind<IHttpRequestHandler>()
+                .To<HttpRequestHandler>()
                 .InSingletonScope()
                 .WithConstructorArgument((ICompositionRoot)this);
 
@@ -39,10 +44,5 @@ namespace MvcWebLibrary
                 .SelectAllClasses()
                 .InheritedFrom(typeof(ControllerBase)));
         }
-
-        public IRequestHandler GetRequestHandler() => container.Get<IRequestHandler>();
-
-        public ControllerBase GetControllerInstance(Type controllerType)
-            => (ControllerBase)container.Get(controllerType);
     }
 }

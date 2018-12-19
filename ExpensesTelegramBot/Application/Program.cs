@@ -6,9 +6,10 @@ namespace Application
     {
         static void Main(string[] args)
         {
-            WebHost.CreateDefault(args)
-                .UseStartup<Startup>()
-                .Run();
+            System.Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory); 
+            //WebHost.CreateDefault(args)
+            //    .UseStartup<Startup>()
+            //    .Run();
 
             //.∧＿∧ 
             //( ･ω･｡)つ━☆・*。 

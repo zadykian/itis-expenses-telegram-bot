@@ -4,8 +4,8 @@ using System.Text;
 
 namespace MvcWebLibrary
 {
-    public interface IRequestListener
+    public interface IServiceConfigurator
     {
-        void StartListening();
+        void AddParentScopeService<TService>();
     }
 }
