@@ -6,16 +6,9 @@ namespace Application
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory); 
-            //WebHost.CreateDefault(args)
-            //    .UseStartup<Startup>()
-            //    .Run();
-
-            //.∧＿∧ 
-            //( ･ω･｡)つ━☆・*。 
-            //⊂　 ノ ・゜+.
-            //しーＪ°。+*костыльнуть!
-            System.Console.ReadKey();
+            WebHost.CreateDefault(args)
+                .UseStartup<Startup>()
+                .Run();
         }
     }
 }

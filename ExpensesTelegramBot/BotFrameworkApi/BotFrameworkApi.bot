@@ -1,0 +1,26 @@
+{
+    "name": "ExpensesAccountingBot",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "1",
+            "name": "development"
+        },
+        {
+            "type": "endpoint",
+            "appId": "afe8a68c-3526-424d-b844-e97c11de8de3",
+            "appPassword": "F91wxIuzddxx5UYn6B0HPw==!qYpGNV+VBg0CRIekPnTXgu9zpH+CWSmRdmUEvEjUhCo=",
+            "endpoint": "https://expensesaccountingbot.azurewebsites.net/api/messages",
+            "id": "2",
+            "name": "production"
+        }
+    ],
+    "padlock": "D0o3qIRUQSRwB7UqjVAzfw==!qPfAz9lqiU/CYUcWkegUe/EjpuLAnsGI5r/lg0WKHgLAqs/dPBaqJH/u0KPEZB7H",
+    "version": "2.0",
+    "overrides": null,
+    "path": "C:\\Repository\\Bots\\ExpensesTelegramBot\\ExpensesTelegramBot\\BotFrameworkApi\\BotFrameworkApi.bot"
+}

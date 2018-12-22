@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MvcWebLibrary
 {
@@ -34,7 +32,11 @@ namespace MvcWebLibrary
             return this;
         }
 
-        public void Run() => requestListener.StartListening();
+        public void Run()
+        {
+            requestListener.StartListening();
+            Console.ReadKey();
+        }
 
         private static (string, int) GetHostAndPort(string[] args)
         {

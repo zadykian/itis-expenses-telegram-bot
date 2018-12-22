@@ -6,16 +6,16 @@ namespace Core
     public class StatisticResult : ValueObject
     {
         public StatisticResult(
-            IEnumerable<string> categories, 
+            Dictionary<string, int> categoriesToAmounts, 
             DateTime startDate, 
             DateTime endDate)
         {
-            Categories = categories;
+            CategoriesToAmounts = categoriesToAmounts;
             StartDate = startDate;
             EndDate = endDate;
         }
 
-        public IEnumerable<string> Categories { get; private set; }
+        public Dictionary<string, int> CategoriesToAmounts { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
     }
