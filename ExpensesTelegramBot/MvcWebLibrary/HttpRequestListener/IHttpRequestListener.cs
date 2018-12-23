@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MvcWebLibrary
+﻿namespace MvcWebLibrary
 {
     public interface IHttpRequestListener
     {
-        //void UseConfiguration(IConfiguration configuration);
+        IConfiguration Configuration { get; set; }
         void StartListening();
     }
 }

@@ -12,36 +12,34 @@ namespace MvcWebLibrary
     {
         public object[] BindArguments(HttpListenerRequest httpRequest, MethodInfo controllerAction)
         {
-            var parameterTypes = controllerAction
-                .GetParameters()
-                .Select(paramInfo => paramInfo.ParameterType);
+            var parameterInfos = controllerAction.GetParameters();
             var result = new List<object>();
-            foreach (var parameterType in parameterTypes)
+            foreach (var parameterInfo in parameterInfos)
             {
                 var actionParam = httpRequest.HttpMethod == "GET"
-                    ? BindFromQueryString(parameterType, httpRequest.QueryString)
-                    : BindFromHeaders(parameterType, httpRequest.Headers);
+                    ? BindFromQueryString(parameterInfo.ParameterType, parameterInfo.Name, httpRequest.QueryString)
+                    : BindFromHeaders(parameterInfo, httpRequest.Headers);
                 result.Add(actionParam);
             }
             return result.ToArray();
         }
 
-        private static object BindFromHeaders(Type parameterType, NameValueCollection headers)
+        private static object BindFromHeaders(ParameterInfo parameterInfo, NameValueCollection headers)
         {
-            var json = headers[parameterType.Name];
+            var json = headers[parameterInfo.Name];
             if (json == null)
             {
                 throw new ModelBindingException(
-                    $"Request does not contain required header '{parameterType.Name}'.");
+                    $"Request does not contain required header '{parameterInfo.Name}'.");
             }
-            return JsonConvert.DeserializeObject(json, parameterType);       
+            return JsonConvert.DeserializeObject(json, parameterInfo.ParameterType);       
         }
 
-        private static object BindFromQueryString(Type parameterType, NameValueCollection httpRequestTokens)
+        private static object BindFromQueryString(Type parameterType, string parameterName, NameValueCollection httpRequestTokens)
         {
-            var keyValue = httpRequestTokens[parameterType.Name];
             if (parameterType == typeof(string) || parameterType.IsPrimitive)
             {
+                var keyValue = httpRequestTokens[parameterName];
                 if (keyValue == null)
                 {
                     throw new ModelBindingException(
@@ -54,14 +52,24 @@ namespace MvcWebLibrary
 
         private static object BindToComplexObject(Type parameterType, NameValueCollection httpRequestTokens)
         {
-            var newInstance = Activator.CreateInstance(parameterType);
-            var properties = parameterType.GetProperties(
-                BindingFlags.Public |
-                BindingFlags.Instance |
-                BindingFlags.SetProperty);
+            var constructorInfo = parameterType
+                .GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .FirstOrDefault(constrInfo => constrInfo.GetParameters().Length == 0);
+
+            if (constructorInfo == null)
+            {
+                throw new MissingMethodException(
+                    $"Class '{parameterType.Name}' does not contain parameterless constructor.");
+            }
+
+            var newInstance = constructorInfo.Invoke(new object[] { });
+            var properties = parameterType
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
+                .Where(prop => !prop.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
+            
             foreach (var property in properties)
             {
-                var propValue = BindFromQueryString(property.PropertyType, httpRequestTokens);
+                var propValue = BindFromQueryString(property.PropertyType, property.Name, httpRequestTokens);
                 property.SetValue(newInstance, propValue);
             }
             return newInstance;

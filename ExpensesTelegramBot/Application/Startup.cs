@@ -18,7 +18,7 @@ namespace Application
         {
             var connectionString = Configuration.GetToken("DbConnectionString");
             serviceConfigurator
-                .AddParentScopedServiceWithConstructorArg<ApplicationContext>(connectionString);
+                .AddParentScopedServiceWithConstructorArg<ApplicationContext, string>(connectionString);
         }
     }
 }

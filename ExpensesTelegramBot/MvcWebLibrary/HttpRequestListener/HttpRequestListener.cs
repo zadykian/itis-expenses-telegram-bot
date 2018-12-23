@@ -1,41 +1,31 @@
 ﻿using System;
-using System.Text;
 using System.Net;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace MvcWebLibrary
 {
     internal class HttpRequestListener : IHttpRequestListener
     {
+        private IConfiguration configuration;
         private readonly IHttpRequestHandler requestHandler;
-        private readonly IConfiguration configuration;
         private readonly HttpListener httpListener;
 
-        public HttpRequestListener(IHttpRequestHandler requestHandler, IConfiguration configuration)
+        public HttpRequestListener(IHttpRequestHandler requestHandler)
         {
             this.requestHandler = requestHandler ?? 
                 throw new ArgumentNullException(nameof(requestHandler));
-
-            this.configuration = configuration ??
-                throw new ArgumentNullException(nameof(configuration));
-
             httpListener = new HttpListener();
-            httpListener.Prefixes.Add(configuration.GetToken("ListeningUrl"));
         }
 
-        //public void UseConfiguration(IConfiguration configuration)
-        //{
-        //    if (configuration == null)
-        //    {
-        //        this.configuration = configuration;
-        //    }
-        //    else
-        //    {
-        //        throw new InvalidOperationException(
-        //            "Configuration cannot be set more than once.");
-        //    }
-        //}
+        public IConfiguration Configuration
+        {
+            get { return configuration; }
+            set
+            {
+                if (configuration == null) configuration = value;
+                else throw new InvalidOperationException(
+                    "Configuration cannot be set more than once.");
+            }
+        }
 
         public async void StartListening()
         {
@@ -43,6 +33,17 @@ namespace MvcWebLibrary
             {
                 return;
             }
+            if (configuration == null)
+            {
+                throw new InvalidOperationException(
+                    "Configiration is null. Please specify configuration via Configuration property.");
+            }
+            var listeningUrl = configuration.GetToken("ListeningUrl");
+            if (listeningUrl == null)
+            {
+                throw new ArgumentException("Configuration does not contain required field 'ListeningUrl'.");
+            }
+            httpListener.Prefixes.Add(listeningUrl);
             httpListener.Start();
             while (true)
             {

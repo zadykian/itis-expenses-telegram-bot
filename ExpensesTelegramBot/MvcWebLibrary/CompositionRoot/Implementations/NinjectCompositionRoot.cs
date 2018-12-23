@@ -41,6 +41,9 @@ namespace MvcWebLibrary
                 .InSingletonScope()
                 .WithConstructorArgument((ICompositionRoot)this);
 
+            container.Bind<Assembly>()
+                .ToConstant(callingAssembly);
+
             container.Bind(configure => configure
                 .From(callingAssembly)
                 .SelectAllClasses()

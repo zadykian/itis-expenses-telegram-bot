@@ -21,7 +21,7 @@ namespace MvcWebLibrary
         {
             var compositionRoot = new NinjectCompositionRoot(Assembly.GetCallingAssembly());
             var requestHandler = compositionRoot.GetHttpRequestHandler();
-            var listener = new HttpRequestListener(requestHandler, null /*IConfiguration*/);     
+            var listener = new HttpRequestListener(requestHandler);  
             return new WebHost(compositionRoot, listener);
         }
 
@@ -30,11 +30,17 @@ namespace MvcWebLibrary
             var startup = new TStartup();
             var serviceConfigurator = compositionRoot.ServiceConfigurator;
             startup.ConfigureServices(serviceConfigurator);
+            requestListener.Configuration = startup.Configuration;
             return this;
         }
 
         public void Run()
         {      
+            if (requestListener.Configuration == null)
+            {
+                throw new InvalidOperationException(
+                    "No startup configured. Please specify startup via WebHost.UseStartup method.");
+            }
             requestListener.StartListening();
             Console.ReadKey();
         }

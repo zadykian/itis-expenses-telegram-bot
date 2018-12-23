@@ -6,6 +6,6 @@ namespace MvcWebLibrary
 {
     public interface IServiceConfigurator
     {
-        void AddParentScopedServiceWithConstructorArg<TService>(object arg);    
+        void AddParentScopedServiceWithConstructorArg<TService, TArgument>(TArgument argument);    
     }
 }
