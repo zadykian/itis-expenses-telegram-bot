@@ -10,6 +10,8 @@ namespace MvcWebLibrary
         {
         }
 
+        protected OkResult Ok() => new OkResult();
+
         protected JsonResult<T> Json<T>(T instanceToSerialize)
             => new JsonResult<T>(instanceToSerialize);
 

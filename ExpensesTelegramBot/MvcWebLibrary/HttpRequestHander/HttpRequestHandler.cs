@@ -17,9 +17,9 @@ namespace MvcWebLibrary
             this.compositionRoot = compositionRoot;
         }
 
-        public IActionResult Handle(HttpListenerContext httpContext)
+        public IActionResult Handle(HttpListenerRequest httpRequest)
         {
-            var routePath = httpContext.Request.Url.AbsolutePath.TrimStart('/').Split('/');
+            var routePath = httpRequest.Url.AbsolutePath.TrimStart('/').Split('/');
             if (routePath.Length != 2)
             {
                 return new BadRequestResult();
@@ -39,7 +39,7 @@ namespace MvcWebLibrary
             try
             {
                 controllerAction = router
-                    .GetControllerAction(controllerType, routePath[1], httpContext.Request.HttpMethod);
+                    .GetControllerAction(controllerType, routePath[1], httpRequest.HttpMethod);
             }
             catch (ControllerActionNotFoundException)
             {
@@ -53,7 +53,7 @@ namespace MvcWebLibrary
             try
             {
                 actionParams = modelBinder
-                    .BindArguments(httpContext.Request, controllerAction);
+                    .BindArguments(httpRequest, controllerAction);
             }
             catch (ModelBindingException)
             {

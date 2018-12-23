@@ -12,11 +12,12 @@ namespace MvcWebLibrary
             this.container = container;
         }
 
-        public void AddParentScopeService<TService>()
+        public void AddParentScopedServiceWithConstructorArg<TService>(object arg)
         {
             container.Bind<TService>()
                 .ToSelf()
-                .InParentScope();
+                .InParentScope()
+                .WithConstructorArgument(arg);
         }
     }
 }

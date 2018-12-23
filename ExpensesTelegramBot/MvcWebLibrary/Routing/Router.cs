@@ -6,9 +6,17 @@ namespace MvcWebLibrary
 {
     internal class Router : IRouter
     {
+        private readonly Assembly controllersAssembly;
+
+        public Router(Assembly controllersAssembly)
+        {
+            this.controllersAssembly = controllersAssembly;
+        }
+
         public Type GetControllerType(string controllerTypeName)
         {
-            var controllerType = Type.GetType($"Application.{controllerTypeName}");
+            var specifiedControllerTypeName = $"{controllersAssembly.GetName().Name}.{controllerTypeName}";
+            var controllerType = controllersAssembly.GetType(specifiedControllerTypeName);
             if (controllerType == null)
             {
                 throw new ControllerNotFoundException(

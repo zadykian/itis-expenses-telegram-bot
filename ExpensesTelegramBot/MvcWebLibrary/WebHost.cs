@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace MvcWebLibrary
 {
@@ -16,11 +17,11 @@ namespace MvcWebLibrary
                 throw new ArgumentNullException(nameof(requestListener));
         }
 
-        public static WebHost CreateDefault(string[] args)
+        public static WebHost CreateDefault()
         {
-            var compositionRoot = new NinjectCompositionRoot();
+            var compositionRoot = new NinjectCompositionRoot(Assembly.GetCallingAssembly());
             var requestHandler = compositionRoot.GetHttpRequestHandler();
-            var listener = new HttpRequestListener(GetHostAndPort(args), requestHandler);     
+            var listener = new HttpRequestListener(requestHandler, null /*IConfiguration*/);     
             return new WebHost(compositionRoot, listener);
         }
 
@@ -33,18 +34,9 @@ namespace MvcWebLibrary
         }
 
         public void Run()
-        {
+        {      
             requestListener.StartListening();
             Console.ReadKey();
-        }
-
-        private static (string, int) GetHostAndPort(string[] args)
-        {
-            if (args.Length == 2 && int.TryParse(args[1], out int port))
-            {
-                return (args[0], port);
-            }
-            else throw new ArgumentException(nameof(args));
         }
     }
 }

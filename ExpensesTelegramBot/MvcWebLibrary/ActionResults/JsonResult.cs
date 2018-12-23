@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.IO;
 using System.Net;
-using System.Text;
 
 namespace MvcWebLibrary
 {
@@ -18,12 +16,7 @@ namespace MvcWebLibrary
         {
             context.Response.StatusCode = 200;
             var json = JsonConvert.SerializeObject(Instance);
-            var result = Encoding.UTF8.GetBytes(json);
-            context.Response.ContentLength64 = result.Length;
-            using (Stream stream = context.Response.OutputStream)
-            {
-                stream.Write(result, 0, result.Length);
-            }
+            WriteIntoBody(json, context.Response);
             base.ExecuteResult(context);
         }
     }

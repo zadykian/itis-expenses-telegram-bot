@@ -5,8 +5,11 @@ namespace Infrastructure
 {
     public class ApplicationContext : DbContext
     {
-        public ApplicationContext() : base()
+        private readonly string connectionString;
+
+        public ApplicationContext(string connectionString) : base()
         {
+            this.connectionString = connectionString;
             Database.EnsureCreated();
         }
 
@@ -16,7 +19,6 @@ namespace Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             optionsBuilder.UseSqlServer(connectionString);
         }
     }

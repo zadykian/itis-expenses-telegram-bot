@@ -6,6 +6,7 @@ namespace MvcWebLibrary
 {
     public interface IHttpRequestListener
     {
+        //void UseConfiguration(IConfiguration configuration);
         void StartListening();
     }
 }

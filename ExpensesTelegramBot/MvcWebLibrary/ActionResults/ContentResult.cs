@@ -14,7 +14,7 @@ namespace MvcWebLibrary
         public override void ExecuteResult(HttpListenerContext context)
         {
             context.Response.StatusCode = 200;
-            context.Response.Headers.Add("Content", Content);
+            WriteIntoBody(Content, context.Response);
             base.ExecuteResult(context);
         }
     }

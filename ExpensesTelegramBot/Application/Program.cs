@@ -6,7 +6,7 @@ namespace Application
     {
         static void Main(string[] args)
         {
-            WebHost.CreateDefault(args)
+            WebHost.CreateDefault()
                 .UseStartup<Startup>()
                 .Run();
         }

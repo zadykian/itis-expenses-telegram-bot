@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Application": {
-      "commandName": "Project",
-      "commandLineArgs": "localhost 8888"
+      "commandName": "Project"
     }
   }
 }

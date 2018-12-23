@@ -1,16 +1,18 @@
 ﻿using Ninject;
-using Ninject.Extensions.NamedScope;
 using Ninject.Extensions.Conventions;
 using System;
+using System.Reflection;
 
 namespace MvcWebLibrary
 {
     internal class NinjectCompositionRoot : ICompositionRoot
     {
         private readonly StandardKernel container;
+        private readonly Assembly callingAssembly;
 
-        public NinjectCompositionRoot()
+        public NinjectCompositionRoot(Assembly callingAssembly)
         {
+            this.callingAssembly = callingAssembly;
             container = new StandardKernel();
             ServiceConfigurator = new NinjectServiceConfigurator(container);
             ConfigureInitialServices();
@@ -40,7 +42,7 @@ namespace MvcWebLibrary
                 .WithConstructorArgument((ICompositionRoot)this);
 
             container.Bind(configure => configure
-                .FromThisAssembly()
+                .From(callingAssembly)
                 .SelectAllClasses()
                 .InheritedFrom(typeof(ControllerBase)));
         }
