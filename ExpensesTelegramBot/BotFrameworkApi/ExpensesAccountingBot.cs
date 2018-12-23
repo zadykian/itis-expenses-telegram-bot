@@ -11,7 +11,7 @@ namespace BotFrameworkApi
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (turnContext.Activity.Type == ActivityTypes.Message)
-            {          
+            {   
                 await turnContext.SendActivityAsync("Hello World", cancellationToken: cancellationToken);
             }
         }

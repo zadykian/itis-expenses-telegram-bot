@@ -5,6 +5,7 @@ using System.Net;
 using Infrastructure;
 using Core;
 using MvcWebLibrary;
+using System.Linq;
 
 namespace Application
 {
@@ -15,11 +16,17 @@ namespace Application
         {
         }
 
-        [HttpGet]
-        public IActionResult AddSingleExpense(SingleExpense newSingleExpense)
+        [HttpPost]
+        public IActionResult AddSingleExpense(SingleExpense singleExpense)
         {
-            dbContext.SingleExpenses.Add(newSingleExpense);
-            return new ContentResult("Ok!");
-        }      
+            dbContext.SingleExpenses.Add(singleExpense);
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetStatistics(StatisticRequest statisticRequest)
+        {
+            var categoriesToAmounts = dbContext.SingleExpenses
+        }
     }
 }

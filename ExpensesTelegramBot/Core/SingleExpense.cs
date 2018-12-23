@@ -10,12 +10,13 @@ namespace Core
         {
         }
 
-        public SingleExpense(string category, int amount)
+        public SingleExpense(Guid userId, string category, int amount)
         {
-            Category = category;
+            Category = category.ToLower();
             Amount = amount;
         }
 
+        public Guid UserId { get; private set; }
         public string Category { get; private set; }
         public int Amount { get; private set; }
     }

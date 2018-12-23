@@ -10,13 +10,20 @@ namespace Core
 
         protected ValueObject()
         {
+            Id = Guid.NewGuid();
             propertyInfos = GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.Name != "Id")
+                .ToArray();
         }
 
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
 
-        public override bool Equals(object obj) => Equals(obj as ValueObject);
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            return Equals(obj as ValueObject);
+        }
 
         public bool Equals(ValueObject other)
         {

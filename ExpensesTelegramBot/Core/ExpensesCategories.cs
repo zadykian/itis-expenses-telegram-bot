@@ -9,12 +9,16 @@ namespace Core
         private ExpensesCategories()
         {
         }
-
-
-        public int UserId { get; private set; }
-
-        public List<string> Categories { get; private set; }
-
         
+        public ExpensesCategories(Guid userId, List<string> categories)
+        {
+            UserId = userId;
+            Categories = categories;
+            Categories.ForEach(str => str.ToLowerInvariant());
+        }
+
+        public Guid UserId { get; private set; }
+
+        public List<string> Categories { get; private set; }     
     }
 }
