@@ -12,7 +12,8 @@ namespace MvcWebLibrary
     {
         public object[] BindArguments(HttpListenerRequest httpRequest, MethodInfo controllerAction)
         {
-            var parameterInfos = controllerAction.GetParameters();
+            var parameterInfos = controllerAction.GetParameters()
+                .Where(paramInfo => !paramInfo.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
             var result = new List<object>();
             foreach (var parameterInfo in parameterInfos)
             {

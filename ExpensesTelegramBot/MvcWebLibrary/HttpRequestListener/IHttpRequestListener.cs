@@ -1,8 +1,10 @@
-﻿namespace MvcWebLibrary
+﻿using System.Threading.Tasks;
+
+namespace MvcWebLibrary
 {
     public interface IHttpRequestListener
     {
         IConfiguration Configuration { get; set; }
-        void StartListening();
+        Task StartListening();
     }
 }

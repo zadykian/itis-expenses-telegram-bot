@@ -16,7 +16,7 @@ namespace Application
         {
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult AddSingleExpense(SingleExpense singleExpense)
         {
             dbContext.SingleExpenses.Add(singleExpense);
@@ -24,9 +24,16 @@ namespace Application
         }
 
         [HttpGet]
-        public IActionResult GetStatistics(StatisticRequest statisticRequest)
+        public IActionResult GetStatistics(StatisticResult statisticResult)
         {
-            var categoriesToAmounts = dbContext.SingleExpenses
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCategoriesList(ExpensesCategory expensesCategory)
+        {
+            
+            return Ok();
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Infrastructure;
+﻿using Infrastructure;
 using MvcWebLibrary;
 using Core;
 
@@ -17,7 +14,7 @@ namespace Application
         [HttpPost]
         public IActionResult CreateNewUser(User user)
         {
-            if (dbContext.Users.Find(user.Id) == null)
+            if (dbContext.Users.Find(user.Login) == null)
             {
                 dbContext.Users.Add(user);
                 return Ok();
@@ -26,6 +23,19 @@ namespace Application
             {
                 return Forbidden();
             }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateUserPassword(UserLoginPassword userLoginPassword)
+        {
+            var userToUpdate = dbContext.Users.Find(userLoginPassword.Login);
+            if (userToUpdate == null)
+            {
+                return BadRequest();
+            }
+            userToUpdate.UpdatePassword(userLoginPassword.Password);
+            dbContext.Users.Update(userToUpdate);
+            return Ok();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace MvcWebLibrary
 {
@@ -27,7 +28,7 @@ namespace MvcWebLibrary
             }
         }
 
-        public async void StartListening()
+        public async Task StartListening()
         {
             if (httpListener.IsListening)
             {
@@ -36,7 +37,7 @@ namespace MvcWebLibrary
             if (configuration == null)
             {
                 throw new InvalidOperationException(
-                    "Configiration is null. Please specify configuration via Configuration property.");
+                    "Configuration is null. Please specify configuration via Configuration property.");
             }
             var listeningUrl = configuration.GetToken("ListeningUrl");
             if (listeningUrl == null)
@@ -47,7 +48,7 @@ namespace MvcWebLibrary
             httpListener.Start();
             while (true)
             {
-                var httpContext = httpListener.GetContext();
+                var httpContext = await httpListener.GetContextAsync();
                 var actionResult = requestHandler.Handle(httpContext.Request);
                 await actionResult.ExecuteResultAsync(httpContext);
             }

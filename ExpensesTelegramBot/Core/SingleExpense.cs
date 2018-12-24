@@ -1,23 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Core
 {
-    public class SingleExpense : ValueObject
+    public class SingleExpense : IValueObject
     {
         private SingleExpense()
         {
         }
 
-        public SingleExpense(Guid userId, string category, int amount)
+        public SingleExpense(User user, string category, int amount)
         {
-            Category = category.ToLower();
+            Id = Guid.NewGuid();
+            User = user ?? throw new ArgumentNullException(nameof(user));
+            UserLogin = user.Login;
+            Category = category.ToLowerInvariant();
             Amount = amount;
         }
 
-        public Guid UserId { get; private set; }
+        public Guid Id { get; private set; }
+
+        public string UserLogin { get; private set; }
+
+        public User User { get; private set; }
+
         public string Category { get; private set; }
+
         public int Amount { get; private set; }
     }
 }

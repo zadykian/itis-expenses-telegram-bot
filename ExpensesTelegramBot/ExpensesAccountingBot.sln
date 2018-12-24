@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcWebLibrary", "MvcWebLibrary\MvcWebLibrary.csproj", "{6038018F-541B-46AC-8DC6-7EDCE158ABAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotFrameworkApi", "BotFrameworkApi\BotFrameworkApi.csproj", "{6C8E44CE-B3E5-4FCB-B4C2-5284C3480A46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotFrameworkApi", "BotFrameworkApi\BotFrameworkApi.csproj", "{6C8E44CE-B3E5-4FCB-B4C2-5284C3480A46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

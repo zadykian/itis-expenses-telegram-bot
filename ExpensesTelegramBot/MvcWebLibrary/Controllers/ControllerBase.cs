@@ -11,6 +11,7 @@ namespace MvcWebLibrary
         }
 
         protected OkResult Ok() => new OkResult();
+        protected BadRequestResult BadRequest() => new BadRequestResult();
         protected ForbiddenResult Forbidden() => new ForbiddenResult();
         protected UnauthorizedResult Unauthorized => new UnauthorizedResult();
 

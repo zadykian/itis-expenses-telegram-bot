@@ -41,8 +41,7 @@ namespace MvcWebLibrary
                 throw new InvalidOperationException(
                     "No startup configured. Please specify startup via WebHost.UseStartup method.");
             }
-            requestListener.StartListening();
-            Console.ReadKey();
+            requestListener.StartListening().Wait();
         }
     }
 }
