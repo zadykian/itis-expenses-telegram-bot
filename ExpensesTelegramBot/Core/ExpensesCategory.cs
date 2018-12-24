@@ -3,7 +3,7 @@ using System;
 
 namespace Core
 {
-    public class ExpensesCategory : IValueObject
+    public class ExpensesCategory : IValueObject, IEquatable<ExpensesCategory>
     {
         private ExpensesCategory()
         {
@@ -25,5 +25,21 @@ namespace Core
         public User User { get; private set; }
 
         public string Category { get; private set; }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return false;
+            return Equals(obj as ExpensesCategory);
+        }
+
+        public bool Equals(ExpensesCategory other)
+        {
+            if (other == null) return false;
+            return User.Equals(other.User) 
+                && Category.Equals(other.Category);
+        }
+
+        public override int GetHashCode()
+            => User.GetHashCode() ^ Category.GetHashCode();
     }
 }

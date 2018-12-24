@@ -30,9 +30,20 @@ namespace Application
         }
 
         [HttpPost]
-        public IActionResult UpdateCategoriesList(ExpensesCategory expensesCategory)
+        public IActionResult AddExpensesCategory(ExpensesCategory expensesCategory)
         {
-            
+            if (dbContext.ExpensesCategories.Find(expensesCategory) == null)
+            {
+                dbContext.ExpensesCategories.Add(expensesCategory);
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public IActionResult RemoveExpensesCategory(ExpensesCategory expensesCategory)
+        {
+            dbContext.ExpensesCategories.Remove(expensesCategory);
             return Ok();
         }
     }

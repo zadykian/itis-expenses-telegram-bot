@@ -15,7 +15,7 @@ namespace Infrastructure
 
         public DbSet<User> Users { get; private set; }
 
-        public DbSet<ExpensesCategory> UserExpensesCategories { get; private set; }
+        public DbSet<ExpensesCategory> ExpensesCategories { get; private set; }
 
         public DbSet<SingleExpense> SingleExpenses { get; private set; }
 
