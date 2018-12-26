@@ -50,5 +50,10 @@ namespace Bot
             }
             return false;
         }
+
+        public void RegisterChannelIfNotExists(Channel channel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

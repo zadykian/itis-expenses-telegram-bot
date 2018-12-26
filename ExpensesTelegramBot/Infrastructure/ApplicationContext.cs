@@ -7,6 +7,11 @@ namespace Infrastructure
     {
         private readonly string connectionString;
 
+        public ApplicationContext()
+        {
+            connectionString = Configuration.ConnectionString;
+        }
+
         public ApplicationContext(string connectionString) : base()
         {
             this.connectionString = connectionString;
