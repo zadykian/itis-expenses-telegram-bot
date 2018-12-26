@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Core
+namespace Bot
 {
-    public class SingleExpense : IValueObject
+    public class SingleExpense
     {
         private SingleExpense()
         {

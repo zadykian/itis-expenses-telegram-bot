@@ -1,9 +1,10 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 
 namespace MvcWebLibrary
 {
     public interface IHttpRequestHandler
     {
-        IActionResult Handle(HttpListenerRequest httpRequest);
+        Task<IActionResult> HandleAsync(HttpListenerRequest httpRequest);
     }
 }

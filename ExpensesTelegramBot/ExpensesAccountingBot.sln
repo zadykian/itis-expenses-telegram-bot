@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcWebLibrary", "MvcWebLibrary\MvcWebLibrary.csproj", "{6038018F-541B-46AC-8DC6-7EDCE158ABAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotFrameworkApi", "BotFrameworkApi\BotFrameworkApi.csproj", "{6C8E44CE-B3E5-4FCB-B4C2-5284C3480A46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot", "Bot\Bot.csproj", "{4BAE5EB6-DD15-4164-8B6B-C5E122BD3757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{6038018F-541B-46AC-8DC6-7EDCE158ABAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6038018F-541B-46AC-8DC6-7EDCE158ABAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6038018F-541B-46AC-8DC6-7EDCE158ABAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C8E44CE-B3E5-4FCB-B4C2-5284C3480A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C8E44CE-B3E5-4FCB-B4C2-5284C3480A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C8E44CE-B3E5-4FCB-B4C2-5284C3480A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C8E44CE-B3E5-4FCB-B4C2-5284C3480A46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BAE5EB6-DD15-4164-8B6B-C5E122BD3757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BAE5EB6-DD15-4164-8B6B-C5E122BD3757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BAE5EB6-DD15-4164-8B6B-C5E122BD3757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BAE5EB6-DD15-4164-8B6B-C5E122BD3757}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

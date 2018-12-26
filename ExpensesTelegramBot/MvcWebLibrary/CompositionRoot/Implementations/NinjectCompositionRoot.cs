@@ -42,7 +42,8 @@ namespace MvcWebLibrary
                 .WithConstructorArgument((ICompositionRoot)this);
 
             container.Bind<Assembly>()
-                .ToConstant(callingAssembly);
+                .ToConstant(callingAssembly)
+                .InThreadScope();
 
             container.Bind(configure => configure
                 .From(callingAssembly)

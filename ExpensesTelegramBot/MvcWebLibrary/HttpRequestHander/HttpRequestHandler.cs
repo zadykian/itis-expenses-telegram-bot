@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace MvcWebLibrary
 {
@@ -17,12 +18,12 @@ namespace MvcWebLibrary
             this.compositionRoot = compositionRoot;
         }
 
-        public IActionResult Handle(HttpListenerRequest httpRequest)
+        public Task<IActionResult> HandleAsync(HttpListenerRequest httpRequest)
         {
             var routePath = httpRequest.Url.AbsolutePath.TrimStart('/').Split('/');
             if (routePath.Length != 2)
             {
-                return new BadRequestResult();
+                return Task.FromResult<IActionResult>(new BadRequestResult());
             }
 
             Type controllerType;
@@ -32,7 +33,7 @@ namespace MvcWebLibrary
             }
             catch (ControllerNotFoundException)
             {
-                return new NotFoundResult();
+                return Task.FromResult<IActionResult>(new NotFoundResult());
             }
 
             MethodInfo controllerAction;
@@ -43,7 +44,7 @@ namespace MvcWebLibrary
             }
             catch (ControllerActionNotFoundException)
             {
-                return new NotFoundResult();
+                return Task.FromResult<IActionResult>(new NotFoundResult());
             }
 
             var controllerInstance = compositionRoot
@@ -57,13 +58,13 @@ namespace MvcWebLibrary
             }
             catch (ModelBindingException)
             {
-                return new BadRequestResult();
+                return Task.FromResult<IActionResult>(new BadRequestResult());
             }
 
             var result = controllerAction
                 .Invoke(controllerInstance, actionParams);
 
-            return result as IActionResult;
+            return Task.FromResult(result as IActionResult);
         }
     }
 }

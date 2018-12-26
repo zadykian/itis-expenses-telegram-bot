@@ -7,14 +7,14 @@ namespace Application
     {
         protected readonly ApplicationContext dbContext;
 
-        protected override void Dispose(bool disposing)
-        {
-            dbContext.SaveChanges();
-        }
-
         public DbAccessController(ApplicationContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            dbContext.SaveChanges();
         }
     }
 }

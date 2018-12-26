@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using MvcWebLibrary;
+using System.Linq;
 using Core;
 
 namespace Application
@@ -12,11 +13,12 @@ namespace Application
         }
 
         [HttpPost]
-        public IActionResult CreateNewUser(User user)
+        public IActionResult CreateNewUser(User user, Channel channel)
         {
-            if (dbContext.Users.Find(user.Login) == null)
+            if (dbContext.Users.Find(user.SecretLogin) == null)
             {
                 dbContext.Users.Add(user);
+                dbContext.Channels.Add(channel);
                 return Ok();
             }
             else
@@ -25,16 +27,24 @@ namespace Application
             }
         }
 
-        [HttpPost]
-        public IActionResult UpdateUserPassword(UserLoginPassword userLoginPassword)
+        [HttpGet]
+        public IActionResult CheckIfUserExists(User user)
         {
-            var userToUpdate = dbContext.Users.Find(userLoginPassword.Login);
-            if (userToUpdate == null)
+            var userToAuthenticate = dbContext.Users.Find(user.SecretLogin);
+            if (userToAuthenticate == null)
             {
-                return BadRequest();
+                return Unauthorized();
             }
-            userToUpdate.UpdatePassword(userLoginPassword.Password);
-            dbContext.Users.Update(userToUpdate);
+            return Ok();
+        }
+
+
+        public IActionResult AddChannelIfNotExists(Channel channel)
+        {
+            if (dbContext.Channels.Find(channel.Id) == null)
+            {
+                dbContext.Channels.Add(channel);
+            }
             return Ok();
         }
     }

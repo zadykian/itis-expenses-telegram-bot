@@ -11,9 +11,11 @@ namespace MvcWebLibrary
         }
 
         protected OkResult Ok() => new OkResult();
+
         protected BadRequestResult BadRequest() => new BadRequestResult();
+        protected UnauthorizedResult Unauthorized() => new UnauthorizedResult();
         protected ForbiddenResult Forbidden() => new ForbiddenResult();
-        protected UnauthorizedResult Unauthorized => new UnauthorizedResult();
+        protected NotFoundResult NotFound() => new NotFoundResult();
 
         protected JsonResult<T> Json<T>(T instanceToSerialize)
             => new JsonResult<T>(instanceToSerialize);

@@ -15,25 +15,32 @@ namespace Infrastructure
 
         public DbSet<User> Users { get; private set; }
 
-        public DbSet<ExpensesCategory> ExpensesCategories { get; private set; }
+        public DbSet<Channel> Channels { get; private set; }
+
+        public DbSet<RegularExpensesCategory> RegularExpensesCategories { get; private set; }
 
         public DbSet<SingleExpense> SingleExpenses { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasKey(user => user.Login);
-            modelBuilder.Entity<ExpensesCategory>().HasKey(record => record.UserLogin);
-            modelBuilder.Entity<SingleExpense>().HasIndex(expense => expense.UserLogin);
+            modelBuilder.Entity<User>().HasKey(user => user.SecretLogin);
+            modelBuilder.Entity<RegularExpensesCategory>().HasIndex(expensesCat => expensesCat.UserSecretLogin);
+            modelBuilder.Entity<SingleExpense>().HasIndex(expense => expense.ChannelId);
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<Channel>()
                 .HasMany<SingleExpense>()
-                .WithOne(exp => exp.User)
-                .HasForeignKey(exp => exp.UserLogin);
+                .WithOne(exp => exp.Channel)
+                .HasForeignKey(exp => exp.ChannelId);
 
             modelBuilder.Entity<User>()
-                .HasMany<ExpensesCategory>()
+                .HasMany<RegularExpensesCategory>()
                 .WithOne(cat => cat.User)
-                .HasForeignKey(cat => cat.UserLogin);
+                .HasForeignKey(cat => cat.UserSecretLogin);
+
+            modelBuilder.Entity<User>()
+                .HasMany<Channel>()
+                .WithOne(channel => channel.User)
+                .HasForeignKey(channel => channel.UserSecretLogin);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

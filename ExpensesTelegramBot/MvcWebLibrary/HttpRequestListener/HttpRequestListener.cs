@@ -28,7 +28,7 @@ namespace MvcWebLibrary
             }
         }
 
-        public async Task StartListening()
+        public async Task StartListeningAsync()
         {
             if (httpListener.IsListening)
             {
@@ -49,7 +49,7 @@ namespace MvcWebLibrary
             while (true)
             {
                 var httpContext = await httpListener.GetContextAsync();
-                var actionResult = requestHandler.Handle(httpContext.Request);
+                var actionResult = await requestHandler.HandleAsync(httpContext.Request);
                 await actionResult.ExecuteResultAsync(httpContext);
             }
         }

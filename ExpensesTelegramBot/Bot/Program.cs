@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace BotFrameworkApi
+namespace Bot
 {
     public class Program
     {

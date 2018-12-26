@@ -5,6 +5,6 @@ namespace MvcWebLibrary
     public interface IHttpRequestListener
     {
         IConfiguration Configuration { get; set; }
-        Task StartListening();
+        Task StartListeningAsync();
     }
 }

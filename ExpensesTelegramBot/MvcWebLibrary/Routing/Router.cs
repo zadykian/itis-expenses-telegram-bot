@@ -15,7 +15,7 @@ namespace MvcWebLibrary
 
         public Type GetControllerType(string controllerTypeName)
         {
-            var specifiedControllerTypeName = $"{controllersAssembly.GetName().Name}.{controllerTypeName}";
+            var specifiedControllerTypeName = $"{controllersAssembly.GetName().Name}.{controllerTypeName}Controller";
             var controllerType = controllersAssembly.GetType(specifiedControllerTypeName);
             if (controllerType == null)
             {
@@ -39,7 +39,7 @@ namespace MvcWebLibrary
             return methodInfo;
         }
 
-        private static bool MethodMatches(MethodInfo controllerActionInfo, string controllerActionName, string httpMethod)
+        private bool MethodMatches(MethodInfo controllerActionInfo, string controllerActionName, string httpMethod)
         {
             var queryContainsMethod = controllerActionInfo.Name.Equals(
                 controllerActionName, 
@@ -52,7 +52,7 @@ namespace MvcWebLibrary
             return queryContainsMethod && methodHasHttpAttribute;
         }
 
-        private static bool IsRequiredHttpAttribute(Attribute attribute, string httpMethod)
+        private bool IsRequiredHttpAttribute(Attribute attribute, string httpMethod)
             => attribute.GetType().Name
                 .Contains(httpMethod, StringComparison.InvariantCultureIgnoreCase);
     }

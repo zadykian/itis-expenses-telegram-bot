@@ -6,57 +6,41 @@ namespace Core
 {
     public class User : IEntity, IEquatable<User>
     {
-        private List<SingleExpense> singleExpenses;
+        private List<RegularExpensesCategory> regularExpensesCategories;
 
-        private List<ExpensesCategory> expensesCategories;
+        private List<Channel> channels;
 
         private User()
         {
         }
 
-        public User(string login, string password)
+        public User(string secretLogin)
         {
-            Login = login?.ToLowerInvariant() ??
-                throw new ArgumentNullException(nameof(login));
-            PasswordHash = password?.GetHashCode() ??
-                throw new ArgumentNullException(nameof(password));
+            SecretLogin = secretLogin?.ToLowerInvariant() ??
+                throw new ArgumentNullException(nameof(secretLogin));
         }
 
-        public string Login { get; private set; }
+        public string SecretLogin { get; private set; }
 
-        public int PasswordHash { get; private set; }
+        public IEnumerable<RegularExpensesCategory> RegularExpensesCategories
+            => regularExpensesCategories.AsEnumerable();
 
-        public IEnumerable<SingleExpense> SingleExpenses
-            => singleExpenses.AsEnumerable();
+        public IEnumerable<Channel> Channels => channels.AsEnumerable();
 
-        public IEnumerable<ExpensesCategory> ExpensesCategories
-            => expensesCategories.AsEnumerable();
-
-        public void AddSingleExpense(SingleExpense singleExpense)
-            => singleExpenses.Add(singleExpense);
-
-        public void RemoveLastSingleExpense()
-            => singleExpenses.RemoveAt(singleExpenses.Count - 1);
-
-        public void AddExpensesCategory(ExpensesCategory expensesCategory)
+        public void AddRegularExpensesCategory(RegularExpensesCategory regularExpensesCategory)
         {
-            if (!expensesCategories.Contains(expensesCategory))
+            if (!regularExpensesCategories.Contains(regularExpensesCategory))
             {
-                expensesCategories.Add(expensesCategory);
+                regularExpensesCategories.Add(regularExpensesCategory);
             }
         }
 
-        public void RemoveExpensesCategory(ExpensesCategory expensesCategory)
-        {
-            expensesCategories.Remove(expensesCategory);
-        }
+        public void RemoveRegularExpensesCategory(RegularExpensesCategory regularExpensesCategory)
+            => regularExpensesCategories.Remove(regularExpensesCategory);
 
-        public void UpdatePassword(string newPassword)
-        {
-            PasswordHash = newPassword?.GetHashCode() ??
-                throw new ArgumentNullException(nameof(newPassword));
-        }
+        public void AddChannel(Channel channel) => channels.Add(channel);
 
+        #region Equals
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj)) return true;
@@ -66,9 +50,10 @@ namespace Core
         public bool Equals(User other)
         {
             if (other == null) return false;
-            return Login == other.Login;
+            return SecretLogin == other.SecretLogin;
         }
 
-        public override int GetHashCode() => Login.GetHashCode();
+        public override int GetHashCode() => SecretLogin.GetHashCode();
+        #endregion
     }
 }
