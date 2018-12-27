@@ -17,18 +17,24 @@ namespace Bot
 
             BotAccessors = botAccessors ?? throw new ArgumentNullException(nameof(botAccessors));
             var dialogState = botAccessors.DialogStateAccessor;
-
             dialogs = new DialogSet(dialogState);
+
             dialogs.Add(new InitialDialog());
+            dialogs.Add(new ChoicePrompt("initialPrompt"));
+
             dialogs.Add(new AuthenticationDialog(requestSender));
-            dialogs.Add(RegistrationDialog.Instance);
+            dialogs.Add(new TextPrompt("secretLogin"));
+            dialogs.Add(new RegistrationDialog(requestSender));
+            dialogs.Add(new TextPrompt("newSecretLogin"));
             dialogs.Add(CreateCategoriesListDialog.Instance);
-            dialogs.Add(MainFunctioningDialog.Instance);
+
+            dialogs.Add(new MainFunctioningDialog(requestSender));
+            dialogs.Add(new ChoicePrompt("categoriesPrompt"));
+            dialogs.Add(new TextPrompt("amountPrompt"));
+
             dialogs.Add(GetStatisticsDialog.Instance);
             dialogs.Add(ManageCategoriesDialog.Instance);
-
-            dialogs.Add(new ChoicePrompt("initialPrompt"));
-            dialogs.Add(new TextPrompt("secretLogin"));
+            
             dialogs.Add(new ConfirmPrompt("confirm"));
         }
 

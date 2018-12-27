@@ -9,8 +9,12 @@ namespace Bot
     {
         Task<bool> CheckIfUserExists(User user);
 
-        Task<bool> CreateNewUserIfNotExists(User user, Channel channel);
+        Task<bool> CreateNewUserIfNotExists(Channel channel);
 
-        void RegisterChannelIfNotExists(Channel channel);
+        Task RegisterChannelIfNotExists(Channel channel);
+
+        Task<List<string>> GetRegularCategories(Channel channel);
+
+        Task AddSingleExpense(SingleExpense singleExpense);
     }
 }

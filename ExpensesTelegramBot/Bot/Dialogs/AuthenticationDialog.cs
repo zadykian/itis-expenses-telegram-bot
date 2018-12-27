@@ -25,21 +25,29 @@ namespace Bot
             {
                 var promptOptions = new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("Please enter your SecretLogin.")
+                    Prompt = MessageFactory.Text("Please enter your SecretLogin .")
                 };
                 return await stepContext.PromptAsync("secretLogin", promptOptions, cancellationToken);
             });
 
             AddStep(async (stepContext, cancellationToken) => 
             {
-                var login = stepContext.Result as string;
+
+                if (!(stepContext.Result is string login) || login.Length < 8 || login.Length > 32)
+                {
+                    await stepContext.Context
+                        .SendActivityAsync(MessageFactory.Text("Invalid login format! Try again."), cancellationToken);
+                    return await stepContext.BeginDialogAsync(Id);
+                }
+
                 var user = new User(login);
                 if (await requestSender.CheckIfUserExists(user))
                 {
                     await stepContext.Context
                         .SendActivityAsync(MessageFactory.Text("Welcome back!"), cancellationToken);
 
-                    
+                    var channel = new Channel(user, stepContext.Context.Activity.ChannelId);
+                    await requestSender.RegisterChannelIfNotExists(channel);                    
 
                     return await stepContext.BeginDialogAsync(MainFunctioningDialog.Id);
                 }

@@ -12,6 +12,17 @@ namespace Application
         {
         }
 
+        [HttpGet]
+        public IActionResult CheckIfUserExists(User user)
+        {
+            var userToAuthenticate = dbContext.Users.Find(user.SecretLogin);
+            if (userToAuthenticate == null)
+            {
+                return Unauthorized();
+            }
+            return Ok();
+        }
+
         [HttpPost]
         public IActionResult CreateNewUser(User user, Channel channel)
         {
@@ -27,18 +38,7 @@ namespace Application
             }
         }
 
-        [HttpGet]
-        public IActionResult CheckIfUserExists(User user)
-        {
-            var userToAuthenticate = dbContext.Users.Find(user.SecretLogin);
-            if (userToAuthenticate == null)
-            {
-                return Unauthorized();
-            }
-            return Ok();
-        }
-
-
+        [HttpPost]
         public IActionResult AddChannelIfNotExists(Channel channel)
         {
             if (dbContext.Channels.Find(channel.Id) == null)
