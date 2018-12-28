@@ -45,11 +45,11 @@ namespace MvcWebLibrary
                 controllerActionName, 
                 StringComparison.InvariantCultureIgnoreCase);
 
-            var methodHasHttpAttribute = controllerActionInfo
-                .GetCustomAttributes()
-                .Any(a => IsRequiredHttpAttribute(a, httpMethod));
+            //var methodHasHttpAttribute = controllerActionInfo
+            //    .GetCustomAttributes()
+            //    .Any(a => IsRequiredHttpAttribute(a, httpMethod));
 
-            return queryContainsMethod && methodHasHttpAttribute;
+            return queryContainsMethod /*&& methodHasHttpAttribute*/;
         }
 
         private bool IsRequiredHttpAttribute(Attribute attribute, string httpMethod)

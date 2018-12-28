@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20181226232751_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20181227155637_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,13 +28,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("UserSecretLogin");
 
-                    b.Property<string>("UserSecretLogin1");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserSecretLogin");
-
-                    b.HasIndex("UserSecretLogin1");
 
                     b.ToTable("Channels");
                 });
@@ -48,13 +44,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("UserSecretLogin");
 
-                    b.Property<string>("UserSecretLogin1");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserSecretLogin");
-
-                    b.HasIndex("UserSecretLogin1");
 
                     b.ToTable("RegularExpensesCategories");
                 });
@@ -94,10 +86,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Core.User", "User")
                         .WithMany()
                         .HasForeignKey("UserSecretLogin");
-
-                    b.HasOne("Core.User")
-                        .WithMany("Channels")
-                        .HasForeignKey("UserSecretLogin1");
                 });
 
             modelBuilder.Entity("Core.RegularExpensesCategory", b =>
@@ -105,10 +93,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Core.User", "User")
                         .WithMany()
                         .HasForeignKey("UserSecretLogin");
-
-                    b.HasOne("Core.User")
-                        .WithMany("RegularExpensesCategories")
-                        .HasForeignKey("UserSecretLogin1");
                 });
 
             modelBuilder.Entity("Core.SingleExpense", b =>

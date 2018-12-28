@@ -18,13 +18,9 @@ namespace MvcWebLibrary
                 .Where(paramInfo => !paramInfo.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase));
             var result = new List<object>();
 
-            var collectionToBindFrom = httpRequest.HttpMethod == "GET"
-                ? httpRequest.QueryString
-                : httpRequest.Headers;
-
             foreach (var parameterInfo in parameterInfos)
             {
-                var actionParam = BindFromJson(parameterInfo, collectionToBindFrom);
+                var actionParam = BindFromJson(parameterInfo, httpRequest.QueryString);
                 result.Add(actionParam);
             }
             return result.ToArray();

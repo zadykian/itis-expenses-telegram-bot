@@ -44,7 +44,7 @@ namespace Bot
                 {
                     await stepContext.Context
                         .SendActivityAsync(MessageFactory.Text("Welcome! Now you should configure your categories."), cancellationToken);
-                    return await stepContext.BeginDialogAsync(ManageCategoriesDialog.Id);
+                    return await stepContext.BeginDialogAsync(CreateCategoriesListDialog.Id);
                 }
                 else
                 {

@@ -5,9 +5,9 @@ using Core;
 
 namespace Application
 {
-    public class SecutiryController : DbAccessController
+    public class SecurityController : DbAccessController
     {
-        public SecutiryController(ApplicationContext dbContext)
+        public SecurityController(ApplicationContext dbContext)
             : base(dbContext)
         {
         }
@@ -16,6 +16,7 @@ namespace Application
         public IActionResult CheckIfUserExists(User user)
         {
             var userToAuthenticate = dbContext.Users.Find(user.SecretLogin);
+            dbContext.SaveChanges();
             if (userToAuthenticate == null)
             {
                 return Unauthorized();
@@ -24,12 +25,13 @@ namespace Application
         }
 
         [HttpPost]
-        public IActionResult CreateNewUser(User user, Channel channel)
+        public IActionResult CreateNewUser(Channel channel)
         {
-            if (dbContext.Users.Find(user.SecretLogin) == null)
+            if (dbContext.Users.Find(channel.User.SecretLogin) == null)
             {
-                dbContext.Users.Add(user);
+                dbContext.Users.Add(channel.User);
                 dbContext.Channels.Add(channel);
+                dbContext.SaveChanges();
                 return Ok();
             }
             else
@@ -44,6 +46,7 @@ namespace Application
             if (dbContext.Channels.Find(channel.Id) == null)
             {
                 dbContext.Channels.Add(channel);
+                dbContext.SaveChanges();
             }
             return Ok();
         }

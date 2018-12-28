@@ -6,10 +6,6 @@ namespace Core
 {
     public class User : IEntity, IEquatable<User>
     {
-        private List<RegularExpensesCategory> regularExpensesCategories;
-
-        private List<Channel> channels;
-
         private User()
         {
         }
@@ -21,24 +17,6 @@ namespace Core
         }
 
         public string SecretLogin { get; private set; }
-
-        public IEnumerable<RegularExpensesCategory> RegularExpensesCategories
-            => regularExpensesCategories.AsEnumerable();
-
-        public IEnumerable<Channel> Channels => channels.AsEnumerable();
-
-        public void AddRegularExpensesCategory(RegularExpensesCategory regularExpensesCategory)
-        {
-            if (!regularExpensesCategories.Contains(regularExpensesCategory))
-            {
-                regularExpensesCategories.Add(regularExpensesCategory);
-            }
-        }
-
-        public void RemoveRegularExpensesCategory(RegularExpensesCategory regularExpensesCategory)
-            => regularExpensesCategories.Remove(regularExpensesCategory);
-
-        public void AddChannel(Channel channel) => channels.Add(channel);
 
         #region Equals
         public override bool Equals(object obj)

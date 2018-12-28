@@ -61,6 +61,7 @@ namespace Application
         public IActionResult AddSingleExpense(SingleExpense singleExpense)
         {
             dbContext.SingleExpenses.Add(singleExpense);
+            dbContext.SaveChanges();
             return Ok();
         }
 
@@ -74,7 +75,7 @@ namespace Application
             }
             expensesCategory.SetUser(user);
 
-            if (dbContext.RegularExpensesCategories.Find(expensesCategory) == null)
+            if (dbContext.RegularExpensesCategories.Find(expensesCategory.Category) == null)
             {
                 dbContext.RegularExpensesCategories.Add(expensesCategory);
                 return Ok();
@@ -97,6 +98,22 @@ namespace Application
             {
                 dbContext.RegularExpensesCategories.Remove(expensesCategoryToRemove);
             }
+            return Ok();
+        }
+
+        public IActionResult SetCategoriesList(CategoriesList categoriesList)
+        {
+            var user = dbContext.Channels.Find(categoriesList.ChannelId)?.User;
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            foreach (var category in categoriesList.Categories)
+            {
+                var newExpensesCategory = new RegularExpensesCategory(user, category.ToLowerInvariant());
+                dbContext.RegularExpensesCategories.Add(newExpensesCategory);
+            }
+            dbContext.SaveChanges();
             return Ok();
         }
     }

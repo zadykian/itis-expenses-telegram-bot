@@ -26,7 +26,6 @@ namespace Bot
 
             AddStep(async (stepContext, cancellationToken) =>
             {
-
                 var channel = new Channel(stepContext.Context.Activity.ChannelId);
                 singleExpense.SetChannel(channel);
                 var categories = await requestSender.GetRegularCategories(channel);
@@ -41,7 +40,6 @@ namespace Bot
 
             AddStep(async (stepContext, cancellationToken) =>
             {
-
                 var channel = new Channel(stepContext.Context.Activity.ChannelId);
                 singleExpense.SetChannel(channel);
                 var categories = await requestSender.GetRegularCategories(channel);
@@ -75,6 +73,13 @@ namespace Bot
             AddStep(async (stepContext, cancellationToken) =>
             {
                 singleExpense.Amount = (int)stepContext.Result;
+                if (!int.TryParse(stepContext.Result.ToString(), out var amount))
+                {
+                    await stepContext.Context
+                        .SendActivityAsync(MessageFactory.Text("Narushitel! Try again."), cancellationToken);
+                    return await stepContext.BeginDialogAsync(Id);
+                }
+                singleExpense.Amount = amount;
                 await requestSender.AddSingleExpense(singleExpense);
                 await stepContext.Context
                     .SendActivityAsync(MessageFactory.Text("Ok!"), cancellationToken);
@@ -84,5 +89,4 @@ namespace Bot
 
         public static new string Id => "mainFunctioningDialog";
     }
-
 }

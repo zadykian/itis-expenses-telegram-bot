@@ -18,33 +18,33 @@ namespace MvcWebLibrary
             this.compositionRoot = compositionRoot;
         }
 
-        public Task<IActionResult> HandleAsync(HttpListenerRequest httpRequest)
+        public async Task<IActionResult> HandleAsync(HttpListenerRequest httpRequest)
         {
             var routePath = httpRequest.Url.AbsolutePath.TrimStart('/').Split('/');
             if (routePath.Length != 2)
             {
-                return Task.FromResult<IActionResult>(new BadRequestResult());
+                return new BadRequestResult();
             }
 
             Type controllerType;
             try
             {
-                controllerType = router.GetControllerType(routePath[0]);
+                controllerType = await Task.Run(() => router.GetControllerType(routePath[0]));
             }
             catch (ControllerNotFoundException)
             {
-                return Task.FromResult<IActionResult>(new NotFoundResult());
+                return new NotFoundResult();
             }
 
             MethodInfo controllerAction;
             try
             {
-                controllerAction = router
-                    .GetControllerAction(controllerType, routePath[1], httpRequest.HttpMethod);
+                controllerAction = await Task.Run(() => router
+                    .GetControllerAction(controllerType, routePath[1], httpRequest.HttpMethod));
             }
             catch (ControllerActionNotFoundException)
             {
-                return Task.FromResult<IActionResult>(new NotFoundResult());
+                return new NotFoundResult();
             }
 
             var controllerInstance = compositionRoot
@@ -53,18 +53,17 @@ namespace MvcWebLibrary
             object[] actionParams;
             try
             {
-                actionParams = modelBinder
-                    .BindArguments(httpRequest, controllerAction);
+                actionParams = await Task.Run(() => modelBinder
+                    .BindArguments(httpRequest, controllerAction));
             }
             catch (ModelBindingException)
             {
-                return Task.FromResult<IActionResult>(new BadRequestResult());
+                return new BadRequestResult();
             }
 
-            var result = controllerAction
-                .Invoke(controllerInstance, actionParams);
+            var result = controllerAction.Invoke(controllerInstance, actionParams);
 
-            return Task.FromResult(result as IActionResult);
+            return result as IActionResult;
         }
     }
 }

@@ -19,23 +19,26 @@ namespace Bot
             httpClient = new HttpClient();
             this.serverAddress = serverAddress;
         }
+        
+        public async Task SetCategoriesList(string channelId, string categories)
+        {
+            var categoriesList = new CategoriesList(channelId, categories.Split(' ').ToList());
+            var json = JsonConvert.SerializeObject(categoriesList);
+            var url = $"{serverAddress}User/SetCategoriesList?categoriesList={json}";
+            await httpClient.GetAsync(url);
+        }
 
         public async Task AddSingleExpense(SingleExpense singleExpense)
         {
             var json = JsonConvert.SerializeObject(singleExpense);
-            var url = $"{serverAddress}/User/AddSingleExpense";
-            var headers = new Dictionary<string, string>
-            {
-                { "singleExpense", json }
-            };
-            var content = new FormUrlEncodedContent(headers);
-            var response = await httpClient.PostAsync(url, content);
+            var url = $"{serverAddress}User/AddSingleExpense?singleExpense={json}";
+            await httpClient.GetAsync(url);
         }
 
         public async Task<bool> CheckIfUserExists(User user)
         {
-            var userJson = JsonConvert.SerializeObject(user);
-            var url = $"{serverAddress}/Security/CheckIfUserExists?user={userJson}";
+            var json = JsonConvert.SerializeObject(user);
+            var url = $"{serverAddress}Security/CheckIfUserExists?user={json}";
             var response = await httpClient.GetAsync(url);
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -46,16 +49,9 @@ namespace Bot
         
         public async Task<bool> CreateNewUserIfNotExists(Channel channel)
         {
-            var userJson = JsonConvert.SerializeObject(channel.User);
-            var channelJson = JsonConvert.SerializeObject(channel);
-            var url = $"{serverAddress}/Security/CreateNewUser";
-            var headers = new Dictionary<string, string>
-            {
-                { "user", userJson },
-                { "channel", channelJson }
-            };
-            var content = new FormUrlEncodedContent(headers);
-            var response = await httpClient.PostAsync(url, content);
+            var json = JsonConvert.SerializeObject(channel);
+            var url = $"{serverAddress}Security/CreateNewUser?channel={json}";
+            var response = await httpClient.GetAsync(url);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 return true;
@@ -65,8 +61,8 @@ namespace Bot
 
         public async Task<List<string>> GetRegularCategories(Channel channel)
         {
-            var channelJson = JsonConvert.SerializeObject(channel);
-            var url = $"{serverAddress}/User/GetRegularExpensesCategories?channel={channelJson}";
+            var json = JsonConvert.SerializeObject(channel);
+            var url = $"{serverAddress}User/GetRegularExpensesCategories?channel={json}";
             var response = await httpClient.GetAsync(url);
             var resultJson = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<string>>(resultJson);
@@ -75,13 +71,8 @@ namespace Bot
         public async Task RegisterChannelIfNotExists(Channel channel)
         {
             var json = JsonConvert.SerializeObject(channel);
-            var url = $"{serverAddress}/Security/AddChannelIfNotExists";
-            var headers = new Dictionary<string, string>
-            {
-                { "channel", json }
-            };
-            var content = new FormUrlEncodedContent(headers);
-            await httpClient.PostAsync(url, content);
+            var url = $"{serverAddress}Security/AddChannelIfNotExists?channel={json}";
+            await httpClient.GetAsync(url);
         }
     }
 }

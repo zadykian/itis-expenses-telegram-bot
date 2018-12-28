@@ -25,7 +25,7 @@ namespace Bot
             {
                 var promptOptions = new PromptOptions
                 {
-                    Prompt = MessageFactory.Text("Please enter your SecretLogin .")
+                    Prompt = MessageFactory.Text("Please enter your SecretLogin.")
                 };
                 return await stepContext.PromptAsync("secretLogin", promptOptions, cancellationToken);
             });

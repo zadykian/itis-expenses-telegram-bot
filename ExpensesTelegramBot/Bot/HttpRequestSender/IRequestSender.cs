@@ -14,7 +14,9 @@ namespace Bot
         Task RegisterChannelIfNotExists(Channel channel);
 
         Task<List<string>> GetRegularCategories(Channel channel);
-
+        
         Task AddSingleExpense(SingleExpense singleExpense);
+
+        Task SetCategoriesList(string channelId, string categories);
     }
 }

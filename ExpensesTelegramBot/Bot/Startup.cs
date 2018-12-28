@@ -75,7 +75,7 @@ namespace Bot
 
                 options.OnTurnError = async (context, exception) =>
                 {
-                    await context.SendActivityAsync("Sorry, it looks like something went wrong.");
+                    await context.SendActivityAsync(exception?.GetType().ToString() ?? "ЭКСЭПШН (не упал)");
                 };
             });
 

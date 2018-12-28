@@ -26,7 +26,9 @@ namespace Bot
             dialogs.Add(new TextPrompt("secretLogin"));
             dialogs.Add(new RegistrationDialog(requestSender));
             dialogs.Add(new TextPrompt("newSecretLogin"));
-            dialogs.Add(CreateCategoriesListDialog.Instance);
+
+            dialogs.Add(new CreateCategoriesListDialog(requestSender));
+            dialogs.Add(new TextPrompt("createCategoriesPrompt"));
 
             dialogs.Add(new MainFunctioningDialog(requestSender));
             dialogs.Add(new ChoicePrompt("categoriesPrompt"));
@@ -59,7 +61,7 @@ namespace Bot
             }
             else
             {
-                await turnContext.SendActivityAsync("NO NO NO");
+                await turnContext.SendActivityAsync("Wrong input!");
             }
         }
     }

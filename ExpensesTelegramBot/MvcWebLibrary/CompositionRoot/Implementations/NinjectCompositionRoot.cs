@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Ninject.Extensions.Conventions;
+using Ninject.Extensions.NamedScope;
 using System;
 using System.Reflection;
 
@@ -42,8 +43,7 @@ namespace MvcWebLibrary
                 .WithConstructorArgument((ICompositionRoot)this);
 
             container.Bind<Assembly>()
-                .ToConstant(callingAssembly)
-                .InThreadScope();
+                .ToConstant(callingAssembly);
 
             container.Bind(configure => configure
                 .From(callingAssembly)
